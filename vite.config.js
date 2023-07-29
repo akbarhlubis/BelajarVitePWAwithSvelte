@@ -8,6 +8,30 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType:'autoUpdate',
+      workbox:{
+        runtimeCaching:[{
+          urlPattern:({url})=>{
+            return url.pathname.startsWith("/api");
+          },
+          handler:"CacheFirst",
+          options:{
+            cacheName:"api-cache",
+            cacheableResponse:{
+              statuses:[0,200]
+            }
+          }
+        }]
+      },
+      manifest:{
+        icons:[
+          {
+            src:"/icons/icon-512x512.png/",
+            sizes:"512x512",
+            type:"image/png",
+            purpose:"any maskable"
+          }
+        ]
+      }
     })
   ],
 })

@@ -9,16 +9,28 @@
 		{ color: 'blue', component: BlueThing }
 	];
 
+	const fetchImage = (async ()=>{
+		const response = await fetch('https://dog.ceo/api/breeds/image/random')
+		return await response.json()
+	})()
+
 	let selected = options[0];
 </script>
-<div class="bg-slate-600">
-	<select bind:value={selected}>
-		{#each options as option}
-			<option value={option}>{option.color}</option>
-		{/each}
-	</select>
+<div class="optionButton">
+	<div class="bg-slate-600">
+		<select bind:value={selected}>
+			{#each options as option}
+				<option value={option}>{option.color}</option>
+			{/each}
+		</select>
+	</div>
 </div>
 
+{#await fetchImage}
+	<p>...Menunggu</p>
+{:then data} 
+<img src={data.message} alt="Dog image" />
+{/await}
 {#if selected.color === 'red'}
 	<RedThing />
 {:else if selected.color === 'green'}
